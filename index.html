@@ -15,7 +15,7 @@
             color: #1e293b;
         }
 
-      .chart-container {
+        .chart-container {
             position: relative;
             width: 100%;
             max-width: 400px;
@@ -27,20 +27,29 @@
 
         @media print {
             body { background-color: white; }
-          .no-print { display: none!important; }
-          .print-break-inside-avoid { page-break-inside: avoid; }
-          .shadow-sm,.shadow-md { box-shadow: none!important; border: 1px solid #e2e8f0; }
-            #interactive-section { display: block!important; }
-          .interactive-hidden { display: block!important; opacity: 1!important; height: auto!important; }
+            .no-print { display: none !important; }
+            .print-break-inside-avoid { page-break-inside: avoid; }
+            .shadow-sm, .shadow-md { box-shadow: none !important; border: 1px solid #e2e8f0; }
+            #interactive-section { display: block !important; }
+            .interactive-hidden { display: block !important; opacity: 1 !important; height: auto !important; }
             @page { margin: 1cm; size: A4; }
         }
 
-      .tab-active { border-bottom: 2px solid #2563eb; color: #2563eb; font-weight: 600; }
-      .tab-inactive { border-bottom: 2px solid transparent; color: #64748b; }
-      .tab-inactive:hover { color: #3b82f6; border-bottom: 2px solid #cbd5e1; }
+        .tab-active { border-bottom: 2px solid #2563eb; color: #2563eb; font-weight: 600; }
+        .tab-inactive { border-bottom: 2px solid transparent; color: #64748b; }
+        .tab-inactive:hover { color: #3b82f6; border-bottom: 2px solid #cbd5e1; }
     </style>
 </head>
 <body class="antialiased min-h-screen pb-12">
+
+    <!-- Chosen Palette: Slate (Neutrals), Blue (Primary Action/Highlight), Green/Red (Status) -->
+    <!-- Application Structure Plan: The SPA is structured as a printable executive dashboard. It starts with a clear, prominent definition block (Section 1) answering the first user prompt. Section 2 uses an interactive toggle and list to categorize different payment types (answering prompt 2), allowing users to explore "Wages" vs "Welfare". Section 3 provides a visual breakdown using Chart.js to reinforce the conceptual difference. A print button is prominently placed to satisfy the "PDF format" request via browser print dialog. -->
+    <!-- Visualization & Content Choices: 
+         - Goal: Inform on Definition -> Presentation: Highlighted Text Card -> Interaction: Static -> Justification: Needs immediate, clear reading.
+         - Goal: Categorize Payment Types -> Presentation: Interactive Tabbed List -> Interaction: Click tabs to filter (Wage, Welfare, Other), click items for details -> Justification: Allows user to self-serve specific examples (e.g., Housing, Commission) without reading a wall of text.
+         - Goal: Conceptual Breakdown -> Presentation: Donut Chart -> Interaction: Hover tooltips -> Library: Chart.js -> Justification: Visually separates base salary + allowances (Wage) from welfare/OT. NO SVG/Mermaid used.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <div class="max-w-4xl mx-auto pt-8 px-4 sm:px-6 lg:px-8">
         
@@ -59,32 +68,32 @@
                 <span>📖</span> 1. นิยาม "ค่าจ้าง" ตามระเบียบประกันสังคม
             </h2>
             <p class="text-slate-700 leading-relaxed mb-4">
-                อ้างอิงตาม <span class="font-semibold">พระราชบัญญัติประกันสังคม พ.ศ. 2533 (มาตรา 5)</span> และ พ.ร.บ. เงินทดแทน "ค่าจ้าง" หมายความถึง [1]:
+                อ้างอิงตาม <span class="font-semibold">พระราชบัญญัติประกันสังคม พ.ศ. 2533 (มาตรา 5)</span> และ พ.ร.บ. เงินทดแทน "ค่าจ้าง" หมายความถึง:
             </p>
             <div class="bg-white p-4 rounded-lg border border-blue-100 shadow-sm">
                 <p class="text-lg text-slate-800 font-medium italic">
-                    "เงินทุกประเภทที่นายจ้างจ่ายให้แก่ลูกจ้าง เป็น <span class="text-blue-700 font-bold bg-blue-100 px-1">ค่าตอบแทนการทำงาน</span> ในวันและเวลาทำงานปกติ ไม่ว่าจะคำนวณตามระยะเวลาหรือผลงาน และรวมถึงเงินที่จ่ายในวันหยุดและวันลาที่ไม่ได้ทำงานด้วย ไม่ว่าจะเรียกชื่ออย่างไรก็ตาม" [1]
+                    "เงินทุกประเภทที่นายจ้างจ่ายให้แก่ลูกจ้าง เป็น <span class="text-blue-700 font-bold bg-blue-100 px-1">ค่าตอบแทนการทำงาน</span> ในวันและเวลาทำงานปกติ ไม่ว่าจะคำนวณตามระยะเวลาหรือผลงาน และรวมถึงเงินที่จ่ายในวันหยุดและวันลาที่ไม่ได้ทำงานด้วย <span class="underline decoration-blue-400 decoration-2">ไม่ว่าจะเรียกชื่ออย่างไรก็ตาม</span>"
                 </p>
             </div>
             <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="flex items-start gap-2">
                     <span class="text-green-600">✔️</span>
-                    <span class="text-sm text-slate-600">จ่ายเพื่อตอบแทนการทำงานปกติ [1]</span>
+                    <span class="text-sm text-slate-600">จ่ายเพื่อตอบแทนการทำงานปกติ</span>
                 </div>
                 <div class="flex items-start gap-2">
                     <span class="text-green-600">✔️</span>
-                    <span class="text-sm text-slate-600">จ่ายเป็นประจำ แน่นอน [1]</span>
+                    <span class="text-sm text-slate-600">จ่ายเป็นประจำ แน่นอน</span>
                 </div>
                 <div class="flex items-start gap-2">
                     <span class="text-red-500">❌</span>
-                    <span class="text-sm text-slate-600">ไม่ใช่สวัสดิการช่วยเหลือ [1]</span>
+                    <span class="text-sm text-slate-600">ไม่ใช่สวัสดิการช่วยเหลือ</span>
                 </div>
             </div>
         </div>
 
         <div class="mb-8 print-break-inside-avoid">
             <h2 class="text-xl font-bold text-slate-800 mb-2">2. เงินอะไรบ้างที่นับเป็น "ค่าจ้าง" (ต้องสมทบประกันสังคม)</h2>
-            <p class="text-slate-600 mb-6">นอกเหนือจากเงินเดือนพื้นฐาน หากเงินนั้นมีลักษณะเข้าข่าย "จ่ายเพื่อตอบแทนการทำงานปกติ" จะถือเป็นค่าจ้างทั้งหมด ลองเลือกหมวดหมู่ด้านล่างเพื่อตรวจสอบ [1]</p>
+            <p class="text-slate-600 mb-6">นอกเหนือจากเงินเดือนพื้นฐาน หากเงินนั้นมีลักษณะเข้าข่าย "จ่ายเพื่อตอบแทนการทำงานปกติ" จะถือเป็นค่าจ้างทั้งหมด ลองเลือกหมวดหมู่ด้านล่างเพื่อตรวจสอบ</p>
 
             <div class="no-print border-b border-slate-200 mb-6 flex gap-4">
                 <button onclick="filterPayments('all')" id="tab-all" class="tab-active pb-2 px-1 focus:outline-none transition-colors">ทั้งหมด</button>
@@ -92,28 +101,7 @@
                 <button onclick="filterPayments('not-wage')" id="tab-not-wage" class="tab-inactive pb-2 px-1 focus:outline-none transition-colors">🎁 ไม่เป็นค่าจ้าง (สวัสดิการ)</button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8" id="payment-list-container">
-            </div>
-        </div>
-
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-8 print-break-inside-avoid">
-            <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
-                <span>⚖️</span> 3. คลังคำพิพากษาศาลฎีกาและแนววินิจฉัยที่สำคัญ
-            </h2>
-            <p class="text-slate-600 mb-4">
-                รวบรวมคำพิพากษาและแนววินิจฉัยอย่างเป็นทางการเพื่อดูพฤติกรรมการจ่ายเงินจริงและการนำไปปรับใช้อย่างถูกต้องในการแยกประเภท "ค่าจ้าง" และ "สวัสดิการ" [1]
-            </p>
-            
-            <div class="flex flex-col sm:flex-row gap-3 mb-6 no-print">
-                <input type="text" id="case-search" oninput="searchCases()" placeholder="🔍 ค้นหาฎีกา เช่น 758-759/2531, ชื่อเงินได้, คำสำคัญ..." class="flex-1 px-4 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                <div class="flex gap-2">
-                    <button onclick="filterCases('all')" id="btn-case-all" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">ทั้งหมด</button>
-                    <button onclick="filterCases('wage')" id="btn-case-wage" class="bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors">เป็นค่าจ้าง</button>
-                    <button onclick="filterCases('not-wage')" id="btn-case-not-wage" class="bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors">ไม่ใช่ค่าจ้าง</button>
-                </div>
-            </div>
-
-            <div class="space-y-3 max-h-[500px] overflow-y-auto pr-2" id="case-cards-container">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="payment-list-container">
             </div>
         </div>
 
@@ -124,7 +112,7 @@
                 <div class="chart-container">
                     <canvas id="compensationChart"></canvas>
                 </div>
-                <p class="text-xs text-center text-slate-500 mt-4">* แผนภูมิแสดงการแยกประเภทตามกฎหมาย ไม่ใช่สัดส่วนจำนวนเงินจริง [1]</p>
+                <p class="text-xs text-center text-slate-500 mt-4">* แผนภูมิแสดงการแยกประเภทตามกฎหมาย ไม่ใช่สัดส่วนจำนวนเงินจริง</p>
             </div>
 
             <div class="bg-slate-800 text-white p-6 rounded-xl shadow-sm flex flex-col justify-center">
@@ -134,21 +122,21 @@
                         <span class="text-yellow-400">⚠️</span>
                         <div>
                             <strong class="block text-slate-100">ชื่อเรียกไม่สำคัญเท่าวัตถุประสงค์</strong>
-                            <p class="text-sm text-slate-400">แม้จะตั้งชื่อว่า "สวัสดิการ..." แต่ถ้าจ่ายเหมาจ่ายทุกเดือนเท่าๆ กันโดยไม่มีเงื่อนไข กฎหมายจะตีความว่าเป็น "ค่าจ้าง" [1]</p>
+                            <p class="text-sm text-slate-400">แม้จะตั้งชื่อว่า "สวัสดิการ..." แต่ถ้าจ่ายเหมาจ่ายทุกเดือนเท่าๆ กันโดยไม่มีเงื่อนไข กฎหมายอาจตีความว่าเป็น "ค่าจ้าง"</p>
                         </div>
                     </li>
                     <li class="flex gap-3">
                         <span class="text-yellow-400">⚠️</span>
                         <div>
                             <strong class="block text-slate-100">กรณี "ค่าเช่าบ้าน"</strong>
-                            <p class="text-sm text-slate-400">ตามเจตนาแรกเริ่ม หากเป็นการจ่ายเพื่อช่วยเหลือนอกเหนือเวลาปกติ เช่น ลูกค้าต่างชาติที่ย้ายถิ่นฐานมาช่วยงาน ถือเป็นสวัสดิการ ไม่ใช่ค่าจ้าง [1]</p>
+                            <p class="text-sm text-slate-400">ตามเอกสารอ้างอิง หากเป็นการจ่ายเพื่อช่วยเหลือกการย้ายถิ่นฐาน (เปลี่ยนแปลงที่พัก) ถือเป็นสวัสดิการ ไม่ใช่ค่าจ้าง</p>
                         </div>
                     </li>
                     <li class="flex gap-3">
                         <span class="text-yellow-400">⚠️</span>
                         <div>
                             <strong class="block text-slate-100">กรณี "ค่าคอมมิชชั่น"</strong>
-                            <p class="text-sm text-slate-400">หากจ่ายเป็นค่านายหน้าแบบมีอัตราตอบแทนผลงานปกติที่พนักงานต้องทำเป็นหน้าที่หลัก ถือเป็นค่าจ้าง แต่ถ้าจ่ายจูงใจพิเศษเฉพาะกลุ่มเมื่อถึงเป้าหมาย จะไม่ใช่ค่าจ้าง [1]</p>
+                            <p class="text-sm text-slate-400">หากจ่ายตามผลงานการขายที่เป็นงานปกติ ถือเป็นค่าจ้างที่ต้องนำมารวมคำนวณประกันสังคม</p>
                         </div>
                     </li>
                 </ul>
@@ -158,7 +146,16 @@
     </div>
 
     <script>
-        const paymentsData ='
+        const paymentsData = [
+            {
+                id: 'p1',
+                name: 'เงินเดือน / ค่าจ้างรายวัน',
+                category: 'wage',
+                icon: '💰',
+                statusText: 'เป็นค่าจ้าง',
+                statusColor: 'text-green-600',
+                statusBg: 'bg-green-100',
+                desc: 'เงินตอบแทนการทำงานโดยตรง ชัดเจนที่สุดว่าต้องนำมาคำนวณหักประกันสังคม'
             },
             {
                 id: 'p2',
@@ -168,7 +165,7 @@
                 statusText: 'เป็นค่าจ้าง',
                 statusColor: 'text-green-600',
                 statusBg: 'bg-green-100',
-                desc: 'แม้จะเรียกชื่อเพื่อช่วยเหลือ แต่หากจ่ายเป็นประจำทุกเดือนจำนวนเท่าๆ กัน ถือเป็นส่วนหนึ่งของค่าตอบแทนการทำงาน (ฎ.758-759/2531) [1]'
+                desc: 'แม้จะเรียกชื่อเพื่อช่วยเหลือ แต่หากจ่ายเป็นประจำทุกเดือนจำนวนเท่าๆ กัน ถือเป็นส่วนหนึ่งของค่าตอบแทนการทำงาน'
             },
             {
                 id: 'p3',
@@ -178,17 +175,17 @@
                 statusText: 'เป็นค่าจ้าง',
                 statusColor: 'text-green-600',
                 statusBg: 'bg-green-100',
-                desc: 'เงินที่จ่ายตอบแทนจากการรับผิดชอบงานในตำแหน่ง หรือทักษะเฉพาะอย่างเป็นประจำ [1]'
+                desc: 'เงินที่จ่ายตอบแทนจากการรับผิดชอบงานในตำแหน่ง หรือทักษะเฉพาะ (เช่น ค่าภาษา, ค่าใบประกอบโรคศิลปะ)'
             },
             {
                 id: 'p4',
-                name: 'ค่าคอมมิชชั่นการันตีขั้นต่ำ',
+                name: 'ค่าคอมมิชชั่น (จากงานปกติ)',
                 category: 'wage',
                 icon: '📈',
                 statusText: 'เป็นค่าจ้าง',
                 statusColor: 'text-green-600',
                 statusBg: 'bg-green-100',
-                desc: 'ค่านายหน้าหรือค่าคอมมิชชั่นที่จ่ายให้เป็นจำนวนคงที่ทุกเดือนโดยไม่คำนึงถึงยอดขายจริง [1]'
+                desc: 'จ่ายตามผลงานยอดขาย หากการขายคืองานปกติของพนักงาน ถือเป็นค่าจ้างตามผลงาน (ตาม ม.5)'
             },
             {
                 id: 'p5',
@@ -198,141 +195,41 @@
                 statusText: 'สวัสดิการ (ไม่ใช่ค่าจ้าง)',
                 statusColor: 'text-slate-600',
                 statusBg: 'bg-slate-200',
-                desc: 'จ่ายเพื่อช่วยเหลือกรณีต้องโยกย้ายสถานประกอบการหรืออำนวยความสะดวกในการจัดหาที่พัก (ฎ.2269/2549) [1]'
+                desc: 'อ้างอิงคำพิพากษา/เอกสาร: หากจ่ายเพื่อช่วยเหลือกรณีต้องย้ายถิ่นฐานมาทำงาน ถือเป็นเจตนาให้เป็นสวัสดิการ ไม่ใช่ค่าจ้าง'
             },
             {
                 id: 'p6',
-                name: 'โบนัสประจำปี',
+                name: 'โบนัส (ตามผลประกอบการ)',
                 category: 'not-wage',
                 icon: '🎉',
                 statusText: 'ไม่ใช่ค่าจ้าง',
                 statusColor: 'text-slate-600',
                 statusBg: 'bg-slate-200',
-                desc: 'รางวัลตอบแทนความดีความชอบตามผลประกอบการประจำปี จ่ายเป็นครั้งคราวเพื่อสร้างขวัญกำลังใจ (ฎ.4573-5228/2544) [1]'
+                desc: 'เป็นเงินพิเศษที่นายจ้างจ่ายให้เป็นครั้งคราวจากกำไร ไม่ใช่เงินที่จ่ายเพื่อตอบแทนการทำงานปกติ'
             },
             {
                 id: 'p7',
                 name: 'ค่าทำงานล่วงเวลา (OT)',
                 category: 'not-wage',
                 icon: '⏱️',
-                statusText: 'ไม่ใช่ค่าจ้าง',
+                statusText: 'ไม่ใช่ค่าจ้างฐาน',
                 statusColor: 'text-slate-600',
                 statusBg: 'bg-slate-200',
-                desc: 'เงินตอบแทนการทำงานนอกเวลาทำงานปกติของวันทำงานปกติหรือวันหยุด ไม่เข้าฐานค่าจ้างปกติ [1]'
+                desc: 'เป็นเงินตอบแทนการทำงาน "นอกเวลา" ทำงานปกติ จึงไม่นำมารวมเป็นฐานค่าจ้างเพื่อหักประกันสังคม'
             },
             {
                 id: 'p8',
-                name: 'เบี้ยเลี้ยงเดินทางต่างจังหวัด (ตามจริง)',
+                name: 'เงินเบี้ยเลี้ยงเดินทางต่างจังหวัด',
                 category: 'not-wage',
                 icon: '🚗',
                 statusText: 'สวัสดิการ (ไม่ใช่ค่าจ้าง)',
                 statusColor: 'text-slate-600',
                 statusBg: 'bg-slate-200',
-                desc: 'จ่ายชดเชยค่าใช้จ่ายที่เกิดขึ้นจริงจากการปฏิบัติงานเพื่อประโยชน์ของนายจ้างตามบิลเบิกจ่ายจริง [1]'
-            }
-        ];
-
-        const casesData = [
-            {
-                number: 'ฎ.758-759/2531',
-                title: 'ค่าครองชีพคงที่รายเดือน',
-                category: 'wage',
-                verdict: 'เป็นค่าจ้าง',
-                behavior: 'นายจ้างจ่ายเงินค่าครองชีพให้พนักงานรายวันและรายเดือนในอัตราที่แน่นอนเท่ากันทุกเดือนเพื่อตอบแทนการทำงานปกติ แม้วันหยุดหรือวันลาก็ได้รับ [1]',
-                reasoning: 'ศาลวินิจฉัยว่าเป็นการจ่ายตอบแทนการทำงานในวันเวลาทำงานปกติ จึงจัดเป็นค่าจ้าง ต้องนำมาสมทบประกันสังคมและรวมคำนวณโอที [1]'
-            },
-            {
-                number: 'ฎ.7316/2549',
-                title: 'ค่าน้ำมันรถและค่าโทรศัพท์เหมาจ่าย',
-                category: 'wage',
-                verdict: 'เป็นค่าจ้าง',
-                behavior: 'จ่ายค่าน้ำมันรถและค่าโทรศัพท์ทุกเดือนเป็นจำนวนแน่นอนในลักษณะเหมาจ่าย โดยไม่ต้องมีใบเสร็จมาแสดงเป็นหลักฐาน [1]',
-                reasoning: 'ไม่ใช่เงินสวัสดิการหรือเงินช่วยเหลือเพื่อทำงาน แต่เป็นเงินรายได้จากการทำงานปกติที่มีลักษณะคงที่และประจำ จึงเป็นค่าจ้าง [1]'
-            },
-            {
-                number: 'ฎ.7891/2553',
-                title: 'ค่านายหน้ายึดรถตามผลงาน',
-                category: 'wage',
-                verdict: 'เป็นค่าจ้าง',
-                behavior: 'จ่ายค่านายหน้ายึดรถเพิ่มเติมจากเงินเดือนปกติ โดยคำนวณตามจำนวนคันที่ลูกจ้างยึดได้จริงในอัตราคันละ 10,000 บาท [1]',
-                reasoning: 'เป็นการจ่ายเงินตอบแทนตอบแทนเนื้องานปกติที่คำนวณตามผลงานที่ทำได้ในเวลาทำงานปกติ จึงเป็นค่าจ้าง [1]'
-            },
-            {
-                number: 'ฎ.4889/2536',
-                title: 'ค่าเบี้ยกิโลเมตรพนักงานขับรถ',
-                category: 'wage',
-                verdict: 'เป็นค่าจ้าง',
-                behavior: 'จ่ายค่าเบี้ยกิโลเมตรให้แก่พนักงานขับรถทุกวันตามระยะทางที่ขับรถได้ในอัตรากิโลเมตรละ 0.35 บาท [1]',
-                reasoning: 'เป็นการจ่ายตอบแทนการทำงานในเวลาปกติโดยคำนวณตามผลงานที่ทำได้จริง จึงถือเป็นค่าจ้าง [1]'
-            },
-            {
-                number: 'อุทธรณ์ (ค่ากะดึก)',
-                title: 'ค่ากะและค่ากะกลางคืน',
-                category: 'wage',
-                verdict: 'เป็นค่าจ้าง',
-                behavior: 'กำหนดระยะเวลาทำงานเป็นกะ พนักงานที่เข้ากะดึก (22.00 - 07.30 น.) จะได้รับค่ากะวันละ 300 บาท หากทำงานปกติก็ได้รับประจำตามวันเข้างาน [1]',
-                reasoning: 'เวลาทำงานกลางคืนเป็นรอบเวลาปกติของพนักงานฝ่ายผลิตกะนั้นๆ การจ่ายมีองค์ประกอบแน่นอนสม่ำเสมอเพื่อตอบแทนการทำงาน จึงเป็นค่าจ้าง [1]'
-            },
-            {
-                number: 'ฎ.2513/2545',
-                title: 'อาหารกลางวันและสวัสดิการ',
-                category: 'not-wage',
-                verdict: 'ไม่ใช่ค่าจ้าง',
-                behavior: 'จัดอาหารกลางวันให้แก่ลูกจ้างวันละ 3 มื้อ (คิดเป็นมูลค่ามื้อละ 40 บาท) [1]',
-                reasoning: 'เป็นการให้สวัสดิการความสงเคราะห์ช่วยเหลือแก่พนักงานเพื่ออำนวยความสะดวกในการทำงาน ไม่ใช่เงินตอบแทนการทำงานโดยตรง [1]'
-            },
-            {
-                number: 'ฎ.5738-5742/2548',
-                title: 'เงิน Service Charge ของโรงแรม',
-                category: 'not-wage',
-                verdict: 'ไม่ใช่ค่าจ้าง',
-                behavior: 'โรงแรมเรียกเก็บค่าบริการ (Service Charge) 10% จากลูกค้า แล้วนำมารวบรวมแบ่งจ่ายให้พนักงานเท่าๆ กันทุกสิ้นเดือน [1]',
-                reasoning: 'เงินจำนวนนี้มาจากบุคคลภายนอก (ลูกค้า) มิใช่เงินทุน of นายจ้างโดยตรง นายจ้างเป็นเพียงผู้รวบรวมส่งต่อ จึงไม่เป็นค่าจ้าง [1]'
-            },
-            {
-                number: 'ฎ.5028/2545',
-                title: 'เงินสมทบประกันสังคมที่นายจ้างออกให้',
-                category: 'not-wage',
-                verdict: 'ไม่ใช่ค่าจ้าง',
-                behavior: 'นายจ้างออกเงินสมทบประกันสังคมส่วนของลูกจ้างแทนให้โดยไม่ได้หักจากเงินเดือนของลูกจ้าง [1]',
-                reasoning: 'เป็นการจ่ายเงินแทนเพื่อช่วยเหลือบรรเทาภาระทางการเงินของลูกจ้างในลักษณะสวัสดิการ ไม่ใช่การตอบแทนทำงานปกติ [1]'
-            },
-            {
-                number: 'ฎ.2269/2549',
-                title: 'เงินช่วยเหลือค่าเช่าบ้านผู้บริหาร',
-                category: 'not-wage',
-                verdict: 'ไม่ใช่ค่าจ้าง',
-                behavior: 'จ่ายเงินช่วยเหลือค่าที่พักให้แก่ผู้บริหารต่างชาติที่ต้องย้ายถิ่นฐานมาทำงานในไทยแบบคงที่ทุกเดือนโดยไม่มีเงื่อนไข [1]',
-                reasoning: 'จ่ายเพื่อช่วยเหลือขวัญกำลังใจแก่พนักงานที่ต้องเปลี่ยนสถานที่พักอาศัยเนื่องจากการย้ายถิ่นฐาน จัดเป็นสวัสดิการ ไม่ใช่ค่าจ้าง [1]'
-            },
-            {
-                number: 'ฎ.4842/2548',
-                title: 'ค่าน้ำมันรถเบิกตามกิโลเมตรจริง',
-                category: 'not-wage',
-                verdict: 'ไม่ใช่ค่าจ้าง',
-                behavior: 'จ่ายค่าน้ำมันรถชดเชยการนำรถส่วนตัวมาใช้งานในการปฏิบัติงาน โดยคิดตามระยะทางจริงและต้องมีใบเสร็จมาแสดงประกอบ [1]',
-                reasoning: 'เป็นการจ่ายเงินเพื่อชดเชยค่าใช้จ่ายจริงที่ลูกจ้างเสียไปเพื่อประโยชน์ของนายจ้างในการทำงาน ไม่ใช่ค่าตอบแทนการทำงาน [1]'
-            },
-            {
-                number: 'ฎ.3949/2561',
-                title: 'ค่าคอมมิชชั่นผันแปรตามผลงาน',
-                category: 'not-wage',
-                verdict: 'ไม่ใช่ค่าจ้าง',
-                behavior: 'จ่ายค่าคอมมิชชั่นพนักงานขายประกันเฉพาะกรณีทำยอดได้ตามเป้าหมาย และมีเงื่อนไขหักเงินมัดจำสำรองค้ำประกันการยกเลิกกรมธรรม์ [1]',
-                reasoning: 'เป็นเงินจูงใจที่ผันแปรตามพฤติกรรมการทำงานและความกระตือรือร้น ไม่ใช่ฐานเงินได้ประจำตอบแทนการทำงานปกติในวันทำงานปกติ [1]'
-            },
-            {
-                number: 'ฎ.958-971/2527',
-                title: 'เบี้ยขยันเงื่อนไข 3 ไม่',
-                category: 'not-wage',
-                verdict: 'ไม่ใช่ค่าจ้าง',
-                behavior: 'จ่ายเงินเพิ่มเบี้ยขยันให้พนักงานเฉพาะรายที่ไม่ขาดงาน ไม่สาย ไม่ลากิจ และไม่ลาป่วยในเดือนนั้นๆ [1]',
-                reasoning: 'เป็นเงินจูงใจในการรักษามาตรฐานความขยันและระเบียบวินัย มิใช่เงินตอบแทนการทำงานปกติทั่วไปตามสัญญาจ้าง [1]'
+                desc: 'จ่ายเพื่อชดเชยค่าใช้จ่ายจากการที่ต้องไปทำงานนอกสถานที่ ไม่ใช่ค่าตอบแทนการทำงาน'
             }
         ];
 
         let currentFilter = 'all';
-        let currentCaseFilter = 'all';
 
         function renderPayments(filter = 'all') {
             const container = document.getElementById('payment-list-container');
@@ -350,7 +247,7 @@
                             <span class="text-2xl">${item.icon}</span>
                             <h4 class="font-bold text-slate-800">${item.name}</h4>
                         </div>
-                        <span class="text-xs px-2 py-1 rounded-full font-medium ${item.category === 'wage'? 'bg-green-100 text-green-600' : 'bg-slate-200 text-slate-600'}">
+                        <span class="text-xs px-2 py-1 rounded-full font-medium ${item.statusBg} ${item.statusColor}">
                             ${item.statusText}
                         </span>
                     </div>
@@ -363,85 +260,11 @@
         function filterPayments(filterType) {
             currentFilter = filterType;
             
-            document.getElementById('tab-all').className = filterType === 'all'? 'tab-active pb-2 px-1 focus:outline-none transition-colors' : 'tab-inactive pb-2 px-1 focus:outline-none transition-colors';
-            document.getElementById('tab-wage').className = filterType === 'wage'? 'tab-active pb-2 px-1 focus:outline-none transition-colors' : 'tab-inactive pb-2 px-1 focus:outline-none transition-colors';
-            document.getElementById('tab-not-wage').className = filterType === 'not-wage'? 'tab-active pb-2 px-1 focus:outline-none transition-colors' : 'tab-inactive pb-2 px-1 focus:outline-none transition-colors';
+            document.getElementById('tab-all').className = filterType === 'all' ? 'tab-active pb-2 px-1 focus:outline-none transition-colors' : 'tab-inactive pb-2 px-1 focus:outline-none transition-colors';
+            document.getElementById('tab-wage').className = filterType === 'wage' ? 'tab-active pb-2 px-1 focus:outline-none transition-colors' : 'tab-inactive pb-2 px-1 focus:outline-none transition-colors';
+            document.getElementById('tab-not-wage').className = filterType === 'not-wage' ? 'tab-active pb-2 px-1 focus:outline-none transition-colors' : 'tab-inactive pb-2 px-1 focus:outline-none transition-colors';
 
             renderPayments(filterType);
-        }
-
-        function renderCases() {
-            const container = document.getElementById('case-cards-container');
-            container.innerHTML = '';
-            
-            const searchQuery = document.getElementById('case-search').value.toLowerCase().trim();
-            
-            const filteredCases = casesData.filter(item => {
-                const matchesFilter = (currentCaseFilter === 'all' || item.category === currentCaseFilter);
-                const matchesSearch = (
-                    item.number.toLowerCase().includes(searchQuery) ||
-                    item.title.toLowerCase().includes(searchQuery) ||
-                    item.behavior.toLowerCase().includes(searchQuery) ||
-                    item.reasoning.toLowerCase().includes(searchQuery)
-                );
-                return matchesFilter && matchesSearch;
-            });
-
-            if (filteredCases.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-8 text-slate-400">
-                        📭 ไม่พบคำพิพากษาหรือคำสำคัญที่ค้นหา
-                    </div>
-                `;
-                return;
-            }
-
-            filteredCases.forEach(item => {
-                const badgeBg = item.category === 'wage'? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-700';
-                const accentBorder = item.category === 'wage'? 'border-l-4 border-l-green-500' : 'border-l-4 border-l-slate-400';
-                
-                const card = document.createElement('div');
-                card.className = `bg-slate-50 p-4 rounded-lg border border-slate-200 ${accentBorder} flex flex-col justify-between gap-3 transition-all hover:bg-slate-100/70`;
-                
-                card.innerHTML = `
-                    <div>
-                        <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">${item.number}</span>
-                            <span class="text-sm font-bold text-slate-800">${item.title}</span>
-                            <span class="text-xs px-2.5 py-0.5 rounded-full font-semibold ${badgeBg} ml-auto sm:ml-2">${item.verdict}</span>
-                        </div>
-                        <div class="text-xs text-slate-600 mt-2 space-y-1.5">
-                            <p><strong class="text-slate-700">📌 พฤติกรรมการจ่ายเงิน:</strong> ${item.behavior}</p>
-                            <p><strong class="text-slate-700">⚖️ แนวทางนิติกรรม/เหตุผลศาล:</strong> ${item.reasoning}</p>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function filterCases(filterType) {
-            currentCaseFilter = filterType;
-            
-            const btns = {
-                all: document.getElementById('btn-case-all'),
-                wage: document.getElementById('btn-case-wage'),
-                'not-wage': document.getElementById('btn-case-not-wage')
-            };
-
-            Object.keys(btns).forEach(key => {
-                if (key === filterType) {
-                    btns[key].className = 'bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors';
-                } else {
-                    btns[key].className = 'bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors';
-                }
-            });
-
-            renderCases();
-        }
-
-        function searchCases() {
-            renderCases();
         }
 
         function initChart() {
@@ -449,9 +272,9 @@
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels:,
+                    labels: ['เงินเดือน & ค่าจ้างประจำ', 'ค่าตำแหน่ง/ทักษะ (ค่าจ้าง)', 'ค่าล่วงเวลา (OT)', 'สวัสดิการ (เช่น ค่าเช่าบ้าน)'],
                     datasets: [{
-                        data: ,
+                        data: [50, 15, 20, 15],
                         backgroundColor: [
                             '#2563eb', 
                             '#60a5fa', 
@@ -494,7 +317,6 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             renderPayments();
-            renderCases();
             initChart();
         });
     </script>
