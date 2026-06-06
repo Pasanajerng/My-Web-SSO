@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สรุปประเด็น: นิยาม "ค่าจ้าง" ตามกฎหมายประกันสังคม</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+
+        @media print {
+            body { background-color: white; }
+            .no-print { display: none !important; }
+            .print-break-inside-avoid { page-break-inside: avoid; }
+            .shadow-sm, .shadow-md { box-shadow: none !important; border: 1px solid #e2e8f0; }
+            #interactive-section { display: block !important; }
+            .interactive-hidden { display: block !important; opacity: 1 !important; height: auto !important; }
+            @page { margin: 1cm; size: A4; }
+        }
+
+        .tab-active { border-bottom: 2px solid #2563eb; color: #2563eb; font-weight: 600; }
+        .tab-inactive { border-bottom: 2px solid transparent; color: #64748b; }
+        .tab-inactive:hover { color: #3b82f6; border-bottom: 2px solid #cbd5e1; }
+    </style>
+</head>
+<body class="antialiased min-h-screen pb-12">
+
+    <!-- Chosen Palette: Slate (Neutrals), Blue (Primary Action/Highlight), Green/Red (Status) -->
+    <!-- Application Structure Plan: The SPA is structured as a printable executive dashboard. It starts with a clear, prominent definition block (Section 1) answering the first user prompt. Section 2 uses an interactive toggle and list to categorize different payment types (answering prompt 2), allowing users to explore "Wages" vs "Welfare". Section 3 provides a visual breakdown using Chart.js to reinforce the conceptual difference. A print button is prominently placed to satisfy the "PDF format" request via browser print dialog. -->
+    <!-- Visualization & Content Choices: 
+         - Goal: Inform on Definition -> Presentation: Highlighted Text Card -> Interaction: Static -> Justification: Needs immediate, clear reading.
+         - Goal: Categorize Payment Types -> Presentation: Interactive Tabbed List -> Interaction: Click tabs to filter (Wage, Welfare, Other), click items for details -> Justification: Allows user to self-serve specific examples (e.g., Housing, Commission) without reading a wall of text.
+         - Goal: Conceptual Breakdown -> Presentation: Donut Chart -> Interaction: Hover tooltips -> Library: Chart.js -> Justification: Visually separates base salary + allowances (Wage) from welfare/OT. NO SVG/Mermaid used.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <div class="max-w-4xl mx-auto pt-8 px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-800">สรุปประเด็นกฎหมายประกันสังคม</h1>
+                <p class="text-slate-500 mt-1">เรื่อง: นิยาม "ค่าจ้าง" และฐานการคำนวณเงินสมทบ</p>
+            </div>
+            <button onclick="window.print()" class="no-print bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2 shadow-sm">
+                <span>🖨️</span> บันทึกเป็น PDF / พิมพ์
+            </button>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-xl shadow-sm mb-8 print-break-inside-avoid">
+            <h2 class="text-xl font-bold text-blue-900 mb-3 flex items-center gap-2">
+                <span>📖</span> 1. นิยาม "ค่าจ้าง" ตามระเบียบประกันสังคม
+            </h2>
+            <p class="text-slate-700 leading-relaxed mb-4">
+                อ้างอิงตาม <span class="font-semibold">พระราชบัญญัติประกันสังคม พ.ศ. 2533 (มาตรา 5)</span> และ พ.ร.บ. เงินทดแทน "ค่าจ้าง" หมายความถึง:
+            </p>
+            <div class="bg-white p-4 rounded-lg border border-blue-100 shadow-sm">
+                <p class="text-lg text-slate-800 font-medium italic">
+                    "เงินทุกประเภทที่นายจ้างจ่ายให้แก่ลูกจ้าง เป็น <span class="text-blue-700 font-bold bg-blue-100 px-1">ค่าตอบแทนการทำงาน</span> ในวันและเวลาทำงานปกติ ไม่ว่าจะคำนวณตามระยะเวลาหรือผลงาน และรวมถึงเงินที่จ่ายในวันหยุดและวันลาที่ไม่ได้ทำงานด้วย <span class="underline decoration-blue-400 decoration-2">ไม่ว่าจะเรียกชื่ออย่างไรก็ตาม</span>"
+                </p>
+            </div>
+            <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="flex items-start gap-2">
+                    <span class="text-green-600">✔️</span>
+                    <span class="text-sm text-slate-600">จ่ายเพื่อตอบแทนการทำงานปกติ</span>
+                </div>
+                <div class="flex items-start gap-2">
+                    <span class="text-green-600">✔️</span>
+                    <span class="text-sm text-slate-600">จ่ายเป็นประจำ แน่นอน</span>
+                </div>
+                <div class="flex items-start gap-2">
+                    <span class="text-red-500">❌</span>
+                    <span class="text-sm text-slate-600">ไม่ใช่สวัสดิการช่วยเหลือ</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-8 print-break-inside-avoid">
+            <h2 class="text-xl font-bold text-slate-800 mb-2">2. เงินอะไรบ้างที่นับเป็น "ค่าจ้าง" (ต้องสมทบประกันสังคม)</h2>
+            <p class="text-slate-600 mb-6">นอกเหนือจากเงินเดือนพื้นฐาน หากเงินนั้นมีลักษณะเข้าข่าย "จ่ายเพื่อตอบแทนการทำงานปกติ" จะถือเป็นค่าจ้างทั้งหมด ลองเลือกหมวดหมู่ด้านล่างเพื่อตรวจสอบ</p>
+
+            <div class="no-print border-b border-slate-200 mb-6 flex gap-4">
+                <button onclick="filterPayments('all')" id="tab-all" class="tab-active pb-2 px-1 focus:outline-none transition-colors">ทั้งหมด</button>
+                <button onclick="filterPayments('wage')" id="tab-wage" class="tab-inactive pb-2 px-1 focus:outline-none transition-colors">💰 เป็นค่าจ้าง (ต้องหัก)</button>
+                <button onclick="filterPayments('not-wage')" id="tab-not-wage" class="tab-inactive pb-2 px-1 focus:outline-none transition-colors">🎁 ไม่เป็นค่าจ้าง (สวัสดิการ)</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="payment-list-container">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12 print-break-inside-avoid">
+            
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-lg font-bold text-slate-800 mb-4 text-center">สัดส่วนองค์ประกอบรายได้ของพนักงาน</h3>
+                <div class="chart-container">
+                    <canvas id="compensationChart"></canvas>
+                </div>
+                <p class="text-xs text-center text-slate-500 mt-4">* แผนภูมิแสดงการแยกประเภทตามกฎหมาย ไม่ใช่สัดส่วนจำนวนเงินจริง</p>
+            </div>
+
+            <div class="bg-slate-800 text-white p-6 rounded-xl shadow-sm flex flex-col justify-center">
+                <h3 class="text-xl font-bold mb-4 text-blue-300">💡 ข้อควรระวังสำหรับนายจ้าง</h3>
+                <ul class="space-y-4">
+                    <li class="flex gap-3">
+                        <span class="text-yellow-400">⚠️</span>
+                        <div>
+                            <strong class="block text-slate-100">ชื่อเรียกไม่สำคัญเท่าวัตถุประสงค์</strong>
+                            <p class="text-sm text-slate-400">แม้จะตั้งชื่อว่า "สวัสดิการ..." แต่ถ้าจ่ายเหมาจ่ายทุกเดือนเท่าๆ กันโดยไม่มีเงื่อนไข กฎหมายอาจตีความว่าเป็น "ค่าจ้าง"</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-yellow-400">⚠️</span>
+                        <div>
+                            <strong class="block text-slate-100">กรณี "ค่าเช่าบ้าน"</strong>
+                            <p class="text-sm text-slate-400">ตามเอกสารอ้างอิง หากเป็นการจ่ายเพื่อช่วยเหลือกการย้ายถิ่นฐาน (เปลี่ยนแปลงที่พัก) ถือเป็นสวัสดิการ ไม่ใช่ค่าจ้าง</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-yellow-400">⚠️</span>
+                        <div>
+                            <strong class="block text-slate-100">กรณี "ค่าคอมมิชชั่น"</strong>
+                            <p class="text-sm text-slate-400">หากจ่ายตามผลงานการขายที่เป็นงานปกติ ถือเป็นค่าจ้างที่ต้องนำมารวมคำนวณประกันสังคม</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const paymentsData = [
+            {
+                id: 'p1',
+                name: 'เงินเดือน / ค่าจ้างรายวัน',
+                category: 'wage',
+                icon: '💰',
+                statusText: 'เป็นค่าจ้าง',
+                statusColor: 'text-green-600',
+                statusBg: 'bg-green-100',
+                desc: 'เงินตอบแทนการทำงานโดยตรง ชัดเจนที่สุดว่าต้องนำมาคำนวณหักประกันสังคม'
+            },
+            {
+                id: 'p2',
+                name: 'ค่าครองชีพ (เหมาจ่ายประจำ)',
+                category: 'wage',
+                icon: '💵',
+                statusText: 'เป็นค่าจ้าง',
+                statusColor: 'text-green-600',
+                statusBg: 'bg-green-100',
+                desc: 'แม้จะเรียกชื่อเพื่อช่วยเหลือ แต่หากจ่ายเป็นประจำทุกเดือนจำนวนเท่าๆ กัน ถือเป็นส่วนหนึ่งของค่าตอบแทนการทำงาน'
+            },
+            {
+                id: 'p3',
+                name: 'ค่าตำแหน่ง / ค่าวิชาชีพ',
+                category: 'wage',
+                icon: '🎖️',
+                statusText: 'เป็นค่าจ้าง',
+                statusColor: 'text-green-600',
+                statusBg: 'bg-green-100',
+                desc: 'เงินที่จ่ายตอบแทนจากการรับผิดชอบงานในตำแหน่ง หรือทักษะเฉพาะ (เช่น ค่าภาษา, ค่าใบประกอบโรคศิลปะ)'
+            },
+            {
+                id: 'p4',
+                name: 'ค่าคอมมิชชั่น (จากงานปกติ)',
+                category: 'wage',
+                icon: '📈',
+                statusText: 'เป็นค่าจ้าง',
+                statusColor: 'text-green-600',
+                statusBg: 'bg-green-100',
+                desc: 'จ่ายตามผลงานยอดขาย หากการขายคืองานปกติของพนักงาน ถือเป็นค่าจ้างตามผลงาน (ตาม ม.5)'
+            },
+            {
+                id: 'p5',
+                name: 'ค่าเช่าบ้าน / ค่าที่พัก',
+                category: 'not-wage',
+                icon: '🏠',
+                statusText: 'สวัสดิการ (ไม่ใช่ค่าจ้าง)',
+                statusColor: 'text-slate-600',
+                statusBg: 'bg-slate-200',
+                desc: 'อ้างอิงคำพิพากษา/เอกสาร: หากจ่ายเพื่อช่วยเหลือกรณีต้องย้ายถิ่นฐานมาทำงาน ถือเป็นเจตนาให้เป็นสวัสดิการ ไม่ใช่ค่าจ้าง'
+            },
+            {
+                id: 'p6',
+                name: 'โบนัส (ตามผลประกอบการ)',
+                category: 'not-wage',
+                icon: '🎉',
+                statusText: 'ไม่ใช่ค่าจ้าง',
+                statusColor: 'text-slate-600',
+                statusBg: 'bg-slate-200',
+                desc: 'เป็นเงินพิเศษที่นายจ้างจ่ายให้เป็นครั้งคราวจากกำไร ไม่ใช่เงินที่จ่ายเพื่อตอบแทนการทำงานปกติ'
+            },
+            {
+                id: 'p7',
+                name: 'ค่าทำงานล่วงเวลา (OT)',
+                category: 'not-wage',
+                icon: '⏱️',
+                statusText: 'ไม่ใช่ค่าจ้างฐาน',
+                statusColor: 'text-slate-600',
+                statusBg: 'bg-slate-200',
+                desc: 'เป็นเงินตอบแทนการทำงาน "นอกเวลา" ทำงานปกติ จึงไม่นำมารวมเป็นฐานค่าจ้างเพื่อหักประกันสังคม'
+            },
+            {
+                id: 'p8',
+                name: 'เงินเบี้ยเลี้ยงเดินทางต่างจังหวัด',
+                category: 'not-wage',
+                icon: '🚗',
+                statusText: 'สวัสดิการ (ไม่ใช่ค่าจ้าง)',
+                statusColor: 'text-slate-600',
+                statusBg: 'bg-slate-200',
+                desc: 'จ่ายเพื่อชดเชยค่าใช้จ่ายจากการที่ต้องไปทำงานนอกสถานที่ ไม่ใช่ค่าตอบแทนการทำงาน'
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        function renderPayments(filter = 'all') {
+            const container = document.getElementById('payment-list-container');
+            container.innerHTML = '';
+
+            const filteredData = paymentsData.filter(item => filter === 'all' || item.category === filter);
+
+            filteredData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col transition-all hover:shadow-md';
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">${item.icon}</span>
+                            <h4 class="font-bold text-slate-800">${item.name}</h4>
+                        </div>
+                        <span class="text-xs px-2 py-1 rounded-full font-medium ${item.statusBg} ${item.statusColor}">
+                            ${item.statusText}
+                        </span>
+                    </div>
+                    <p class="text-sm text-slate-600 mt-2 pl-9">${item.desc}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterPayments(filterType) {
+            currentFilter = filterType;
+            
+            document.getElementById('tab-all').className = filterType === 'all' ? 'tab-active pb-2 px-1 focus:outline-none transition-colors' : 'tab-inactive pb-2 px-1 focus:outline-none transition-colors';
+            document.getElementById('tab-wage').className = filterType === 'wage' ? 'tab-active pb-2 px-1 focus:outline-none transition-colors' : 'tab-inactive pb-2 px-1 focus:outline-none transition-colors';
+            document.getElementById('tab-not-wage').className = filterType === 'not-wage' ? 'tab-active pb-2 px-1 focus:outline-none transition-colors' : 'tab-inactive pb-2 px-1 focus:outline-none transition-colors';
+
+            renderPayments(filterType);
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('compensationChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['เงินเดือน & ค่าจ้างประจำ', 'ค่าตำแหน่ง/ทักษะ (ค่าจ้าง)', 'ค่าล่วงเวลา (OT)', 'สวัสดิการ (เช่น ค่าเช่าบ้าน)'],
+                    datasets: [{
+                        data: [50, 15, 20, 15],
+                        backgroundColor: [
+                            '#2563eb', 
+                            '#60a5fa', 
+                            '#cbd5e1', 
+                            '#94a3b8'  
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: "'Sarabun', sans-serif" },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label.includes('(ค่าจ้าง)') || label.includes('เงินเดือน')) {
+                                        return label + ' : ต้องหัก ปสก.';
+                                    }
+                                    return label + ' : ไม่ต้องหัก ปสก.';
+                                }
+                            },
+                            titleFont: { family: "'Sarabun', sans-serif" },
+                            bodyFont: { family: "'Sarabun', sans-serif" }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPayments();
+            initChart();
+        });
+    </script>
+</body>
+</html>
